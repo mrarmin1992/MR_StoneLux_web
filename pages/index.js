@@ -42,7 +42,7 @@ export default function Home() {
         </div>
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <h2>Kamenorezačka radnja "MR StoneLux"</h2>
+          <h1>Kamenorezačka radnja "MR StoneLux"</h1>
           <p>Majstori kamenorezačkog zanata</p>
         </div>
       </div>
