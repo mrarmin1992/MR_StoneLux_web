@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <div className="page-container">
-      {/* NAVBAR sekcija*/}
+      {/* NAVBAR */}
       <header className="glass-navbar">
         <div className="nav-container">
           <a href="#" className="brand">
