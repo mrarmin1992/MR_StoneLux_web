@@ -5,6 +5,7 @@ import PageLayout from '@/components/PageLayout';
 import AboutUs from '@/components/AboutUs';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import Values from '@/components/Values';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Navbar />
       <PageLayout />
       <AboutUs />
+      <Values />
       <Contact />
       <Footer />
     </div>

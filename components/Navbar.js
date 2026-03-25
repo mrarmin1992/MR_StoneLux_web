@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import logo from '../assets/logo1.png';
+import Link from 'next/link';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -23,8 +24,8 @@ export default function Navbar() {
           <a href="#" className="nav-link" onClick={handleLinkClick}>Početna</a>
           <a href="#about" className="nav-link" onClick={handleLinkClick}>O nama</a>
           <a href="#projekti" className="nav-link" onClick={handleLinkClick}>Projekti</a>
-          <a href="#kamen" className="nav-link" onClick={handleLinkClick}>Kamen</a>
-          <a href="#kontakt" className="nav-link" onClick={handleLinkClick}>Kontakt</a>
+          <Link href="/kamen" className="nav-link" onClick={handleLinkClick}>Kamen</Link>
+          <a href="#contact" className="nav-link" onClick={handleLinkClick}>Kontakt</a>
         </nav>
 
         <a href="#" className="cta-btn">Prijava</a>
