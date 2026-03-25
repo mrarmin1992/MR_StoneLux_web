@@ -57,7 +57,10 @@ export default function StoneOffer() {
     { name: 'Kamen granit Rose Nasr', img: '/assets/Kamen_granit_Rose_Nasr.jpg' },
     { name: 'Dyno Royal', img: '/assets/Dyno Royal.jpeg' },
     { name: 'Bijeli Mermer', img: '/assets/bijeli_mermer.jpg' },
-    { name: 'Afyon Sivi', img: '/assets/Afyon_sivi.webp' }
+    { name: 'Afyon Sivi', img: '/assets/Afyon_sivi.webp' },
+    { name: 'Kavala', img: '/assets/Mermer-Kavala.jpg' },
+    { name: 'Prilep/Sivec', img: '/assets/Prilep.webp' },
+    { name: 'Impala', img: '/assets/Impala.jpeg' },
   ];
 
   return (

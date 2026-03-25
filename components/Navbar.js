@@ -24,7 +24,7 @@ export default function Navbar() {
           <a href="#" className="nav-link" onClick={handleLinkClick}>Početna</a>
           <a href="#about" className="nav-link" onClick={handleLinkClick}>O nama</a>
           <a href="#projekti" className="nav-link" onClick={handleLinkClick}>Projekti</a>
-          <Link href="/kamen" className="nav-link" onClick={handleLinkClick}>Kamen</Link>
+          <a href="#materijali" className="nav-link" onClick={handleLinkClick}>Materijali</a>
           <a href="#contact" className="nav-link" onClick={handleLinkClick}>Kontakt</a>
         </nav>
 

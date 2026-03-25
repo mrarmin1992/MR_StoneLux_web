@@ -7,6 +7,7 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import Values from '@/components/Values';
 import Cards from '@/components/Cards';
+import Materijali from '@/components/Materijali';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <AboutUs />
       <Values />
       <Cards />
+      <Materijali />
       <Contact />
       <Footer />
     </div>
