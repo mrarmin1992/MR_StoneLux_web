@@ -16,6 +16,13 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 180px; /* visina tvog navbar-a */
+}
+
+
+
 body {
   color: var(--foreground);
   background: var(--background);

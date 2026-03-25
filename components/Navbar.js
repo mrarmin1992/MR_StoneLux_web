@@ -7,20 +7,24 @@ import logo from '../assets/logo1.png';
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
+  const handleLinkClick = () => {
+    setOpen(false);
+  };
+
   return (
     <header className="glass-navbar">
       <div className="nav-container">
-        
+
         <a href="#" className="brand">
           <Image src={logo} alt="Stonelux logo" height={65} priority />
         </a>
 
         <nav className={`nav-links ${open ? 'open' : ''}`}>
-          <a href="#" className="nav-link">Početna</a>
-          <a href="#" className="nav-link">O nama</a>
-          <a href="#" className="nav-link">Projekti</a>
-          <a href="#" className="nav-link">Kamen</a>
-          <a href="#" className="nav-link">Kontakt</a>
+          <a href="#" className="nav-link" onClick={handleLinkClick}>Početna</a>
+          <a href="#about" className="nav-link" onClick={handleLinkClick}>O nama</a>
+          <a href="#projekti" className="nav-link" onClick={handleLinkClick}>Projekti</a>
+          <a href="#kamen" className="nav-link" onClick={handleLinkClick}>Kamen</a>
+          <a href="#kontakt" className="nav-link" onClick={handleLinkClick}>Kontakt</a>
         </nav>
 
         <a href="#" className="cta-btn">Prijava</a>
