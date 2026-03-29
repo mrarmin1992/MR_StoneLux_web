@@ -3,78 +3,78 @@ import { getAllBlogs } from '@/lib/api';
 import { useRouter } from 'next/router';
 
 export default function BlogPage({ blogs }) {
-  const router = useRouter();
+    const router = useRouter();
 
-  const sortedBlogs = blogs
-    ?.slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedBlogs = blogs
+        ?.slice()
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  const handleNavigate = (slug) => {
-    router.push(`/blog/${slug}`);
-  };
+    const handleNavigate = (slug) => {
+        router.push(`/blog/${slug}`);
+    };
 
-  return (
-    <>
-      <Head>
-        <title>Svi blogovi - MR StoneLux</title>
-      </Head>
+    return (
+        <>
+            <Head>
+                <title>Svi blogovi - MR StoneLux</title>
+            </Head>
 
-      <div className="page">
-        {/* HEADER */}
-        <div className="header">
-          <h1>Svi naši projekti</h1>
-          <p>Inspiracija, savjeti i priče iz našeg rada</p>
+            <div className="page">
+                {/* HEADER */}
+                <div className="header">
+                    <h1>Svi naši projekti</h1>
+                    <p>Inspiracija, savjeti i priče iz našeg rada</p>
 
-          <button className="homeBtn" onClick={() => router.push('/')}>
-            ⬅ Početna
-          </button>
-        </div>
-
-        {/* GRID */}
-        <div className="cards-grid">
-          {sortedBlogs?.map((blog, index) => (
-            <div
-              key={blog._id}
-              className="card"
-              style={{ animationDelay: `${index * 80}ms` }}
-            >
-              <img
-                src={blog.image || '/assets/placeholder.jpg'}
-                className="card-img"
-                alt={blog.title}
-              />
-
-              <div className="card-content">
-                <div className="tags">
-                  <span className="tag">
-                    {blog.tag || 'Blog'}
-                  </span>
+                    <button className="homeBtn" onClick={() => router.push('/')}>
+                        ⬅ Početna
+                    </button>
                 </div>
 
-                <p className="date">
-                  {blog.date
-                    ? new Date(blog.date).toISOString().split('T')[0]
-                    : ''}
-                </p>
+                {/* GRID */}
+                <div className="cards-grid">
+                    {sortedBlogs?.map((blog, index) => (
+                        <div
+                            key={blog._id}
+                            className="card"
+                            style={{ animationDelay: `${index * 80}ms` }}
+                        >
+                            <img
+                                src={blog.image || '/assets/placeholder.jpg'}
+                                className="card-img"
+                                alt={blog.title}
+                            />
 
-                <h3>{blog.title}</h3>
+                            <div className="card-content">
+                                <div className="tags">
+                                    <span className="tag">
+                                        {blog.tag || 'Blog'}
+                                    </span>
+                                </div>
 
-                <p className="clamp">
-                  {blog.excerpt || blog.shortDescription}
-                </p>
+                                <p className="date">
+                                    {blog.date
+                                        ? new Date(blog.date).toISOString().split('T')[0]
+                                        : ''}
+                                </p>
 
-                <button
-                  className="read-more-button"
-                  onClick={() => handleNavigate(blog.slug)}
-                >
-                  Pročitaj više →
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
+                                <h3>{blog.title}</h3>
 
-        <style jsx>{`
+                                <p className="clamp">
+                                    {blog.excerpt || blog.shortDescription}
+                                </p>
+
+                                <button
+                                    className="read-more-button"
+                                    onClick={() => handleNavigate(blog.slug)}
+                                >
+                                    Pogledaj detaljnije →
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <style jsx>{`
           .page {
             min-height: 100vh;
             padding: 60px 20px;
@@ -131,6 +131,8 @@ export default function BlogPage({ blogs }) {
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
             transform: translateY(20px);
+            display: flex;
+  flex-direction: column;
           }
 
           .card:hover {
@@ -146,6 +148,9 @@ export default function BlogPage({ blogs }) {
 
           .card-content {
             padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
           }
 
           .tags {
@@ -179,16 +184,15 @@ export default function BlogPage({ blogs }) {
           }
 
           .read-more-button {
-            margin-top: 12px;
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            background: linear-gradient(135deg, #d4af37, #b68d2e);
-            color: white;
-            font-weight: bold;
-            transition: 0.3s;
+            background-color: #d4af37;
+                  color: #fff;
+                  font-weight: bold;
+                  padding: 8px 14px;
+                  font-size: 13px;
+                  border: none;
+                  border-radius: 6px;
+                  cursor: pointer;
+                  margin-top: auto;
           }
 
           .read-more-button:hover {
@@ -203,16 +207,16 @@ export default function BlogPage({ blogs }) {
             }
           }
         `}</style>
-      </div>
-    </>
-  );
+            </div>
+        </>
+    );
 }
 
 export async function getStaticProps() {
-  const blogs = await getAllBlogs();
+    const blogs = await getAllBlogs();
 
-  return {
-    props: { blogs },
-    revalidate: 60,
-  };
+    return {
+        props: { blogs },
+        revalidate: 60,
+    };
 }

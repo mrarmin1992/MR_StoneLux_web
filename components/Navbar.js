@@ -28,7 +28,7 @@ export default function Navbar() {
           <a href="#contact" className="nav-link" onClick={handleLinkClick}>Kontakt</a>
         </nav>
 
-        <a href="#" className="cta-btn">Prijava</a>
+        <a href="#" className="cta-btn"></a>
 
         <div className="hamburger" onClick={() => setOpen(!open)}>
           <span></span>

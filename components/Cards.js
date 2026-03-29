@@ -36,41 +36,6 @@ export default function Cards({ blogs }) {
         </p>
 
         <div className="cards-grid">
-
-          {/* STATIC POSTS */}
-          {posts.map((post) => (
-            <div key={post.id} className="card">
-              <div className="image-wrapper">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="card-img"
-                />
-                <div className="overlay"></div>
-              </div>
-
-              <div className="card-content">
-                <div className="tags">
-                  {post.tags?.map((tag, i) => (
-                    <span key={i} className="tag">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <h3>{post.title}</h3>
-                <p className="clamp">{post.excerpt}</p>
-
-                <button
-                  className="read-more-button"
-                  onClick={() => handleNavigate(post.link)}
-                >
-                  Pogledaj detaljnije
-                </button>
-              </div>
-            </div>
-          ))}
-
           {/* DYNAMIC BLOGS */}
           {sortedBlogs?.map((blog) => (
             <div key={blog._id} className="card">
@@ -86,21 +51,21 @@ export default function Cards({ blogs }) {
               <div className="card-content">
 
                 {/* TAGS (SINGLE STRING FROM SANITY) */}
-                <div className="tags">
-                  {blog.tag ? (
-                    <span className="tag tag-primary">
-                      {blog.tag}
-                    </span>
-                  ) : (
-                    <span className="tag">Blog</span>
-                  )}
-                </div>
+                <div className="top-row">
+                  <div className="tags">
+                    {blog.tag ? (
+                      <span className="tag tag-primary">{blog.tag}</span>
+                    ) : (
+                      <span className="tag">Blog</span>
+                    )}
+                  </div>
 
-                <p className="date">
-                  {blog.date
-                    ? new Date(blog.date).toISOString().split('T')[0]
-                    : ''}
-                </p>
+                  <p className="date">
+                    {blog.date
+                      ? new Date(blog.date).toISOString().split('T')[0]
+                      : ''}
+                  </p>
+                </div>
 
                 <h3>{blog.title}</h3>
 
@@ -150,6 +115,19 @@ export default function Cards({ blogs }) {
                   display: grid;
                   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                   gap: 20px;
+                }
+
+                .top-row {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 10px;
+                }
+                
+                .date {
+                  font-size: 12px;
+                  color: #999;
+                  margin: 0;
                 }
 
                 .card {
