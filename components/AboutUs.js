@@ -57,7 +57,7 @@ export default function AboutUs() {
               suštinu istinskog kvaliteta.
             </p>
             <p className="about-text">
-              "U kamenu ostaje ono što vrijeme ne briše."
+              {"U kamenu ostaje ono što vrijeme ne briše."}
             </p>
 
             {/* ISKUSTVO */}

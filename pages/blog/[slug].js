@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/lib/sanity";
 import { getSingleBlog, getAllBlogs } from "@/lib/api";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export default function BlogDetail({ blog }) {
   const [isMobile, setIsMobile] = useState(false);
@@ -27,7 +28,7 @@ export default function BlogDetail({ blog }) {
   const handleBack = (e) => {
     e.preventDefault();
     setLoadingBack(true);
-    router.push("/"); // navigacija nazad
+    router.push("/");
   };
 
   return (
@@ -47,7 +48,7 @@ export default function BlogDetail({ blog }) {
       }}
     >
       {/* BACK BUTTON */}
-      <a
+      <Link
         href="/"
         onClick={handleBack}
         style={{
@@ -70,7 +71,7 @@ export default function BlogDetail({ blog }) {
         }}
       >
         {loadingBack ? <span className="loader"></span> : "← Početna"}
-      </a>
+      </Link>
 
       {/* GLOW BACKGROUND */}
       <div
@@ -102,6 +103,7 @@ export default function BlogDetail({ blog }) {
           zIndex: 1,
         }}
       >
+        {/* TITLE */}
         <h1
           style={{
             fontSize: isMobile ? "28px" : "46px",
@@ -109,20 +111,19 @@ export default function BlogDetail({ blog }) {
             marginBottom: "12px",
             lineHeight: "1.15",
             color: "#0f172a",
-            letterSpacing: "-1px",
             textAlign: "center",
           }}
         >
           {blog.title}
         </h1>
 
+        {/* SUBTITLE */}
         {blog.subtitle && (
           <p
             style={{
               fontSize: isMobile ? "15px" : "18px",
               color: "#64748b",
               marginBottom: "25px",
-              lineHeight: "1.6",
               textAlign: "center",
             }}
           >
@@ -130,25 +131,28 @@ export default function BlogDetail({ blog }) {
           </p>
         )}
 
+        {/* DATE */}
         {blog.date && (
           <p
             style={{
               fontSize: isMobile ? "13px" : "16px",
               color: "#64748b",
               marginBottom: "12px",
-              textAlign: "left",
-              letterSpacing: "0.5px",
             }}
           >
             {new Date(blog.date).toISOString().split("T")[0]}
           </p>
         )}
 
+        {/* MAIN IMAGE (LAZY + PRIORITY) */}
         {blog.image && (
           <div style={{ marginBottom: "35px" }}>
-            <img
+            <Image
               src={urlFor(blog.image).width(900).url()}
               alt={blog.title}
+              width={900}
+              height={500}
+              priority
               style={{
                 width: "100%",
                 height: "auto",
@@ -160,6 +164,7 @@ export default function BlogDetail({ blog }) {
           </div>
         )}
 
+        {/* CONTENT */}
         <div
           style={{
             fontSize: isMobile ? "16px" : "18px",
@@ -175,6 +180,7 @@ export default function BlogDetail({ blog }) {
                   <p style={{ marginBottom: "18px" }}>{children}</p>
                 ),
               },
+
               types: {
                 image: ({ value }) => (
                   <div
@@ -184,9 +190,12 @@ export default function BlogDetail({ blog }) {
                       margin: "30px 0",
                     }}
                   >
-                    <img
+                    <Image
                       src={urlFor(value).width(700).url()}
-                      alt="blog"
+                      alt="blog image"
+                      width={700}
+                      height={400}
+                      loading="lazy"
                       style={{
                         width: "100%",
                         maxWidth: "550px",
@@ -202,6 +211,7 @@ export default function BlogDetail({ blog }) {
         </div>
       </div>
 
+      {/* LOADER */}
       <style jsx>{`
         .loader {
           border: 2px solid #fff;
@@ -211,9 +221,14 @@ export default function BlogDetail({ blog }) {
           height: 14px;
           animation: spin 0.8s linear infinite;
         }
+
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>
