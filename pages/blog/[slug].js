@@ -3,24 +3,32 @@ import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/lib/sanity";
 import { getSingleBlog, getAllBlogs } from "@/lib/api";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function BlogDetail({ blog }) {
   const [isMobile, setIsMobile] = useState(false);
+  const [loadingBack, setLoadingBack] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize(); // inicijalno
+    handleResize();
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (!blog) {
     return <div>Blog nije pronađen</div>;
   }
+
+  const handleBack = (e) => {
+    e.preventDefault();
+    setLoadingBack(true);
+    router.push("/"); // navigacija nazad
+  };
 
   return (
     <div
@@ -32,15 +40,16 @@ export default function BlogDetail({ blog }) {
           "radial-gradient(circle at top, #e2e8f0 0%, #f8fafc 40%, #eef2f7 100%)",
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start", 
-        width: "100%",           
-        overflowX: "hidden",      
+        alignItems: "flex-start",
+        width: "100%",
+        overflowX: "hidden",
         position: "relative",
       }}
     >
       {/* BACK BUTTON */}
-      <Link
+      <a
         href="/"
+        onClick={handleBack}
         style={{
           position: "fixed",
           top: isMobile ? "12px" : "20px",
@@ -54,10 +63,14 @@ export default function BlogDetail({ blog }) {
           boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
           zIndex: 1000,
           fontSize: isMobile ? "13px" : "16px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minWidth: "110px",
         }}
       >
-        ← Početna
-      </Link>
+        {loadingBack ? <span className="loader"></span> : "← Početna"}
+      </a>
 
       {/* GLOW BACKGROUND */}
       <div
@@ -89,7 +102,6 @@ export default function BlogDetail({ blog }) {
           zIndex: 1,
         }}
       >
-        {/* TITLE */}
         <h1
           style={{
             fontSize: isMobile ? "28px" : "46px",
@@ -104,7 +116,6 @@ export default function BlogDetail({ blog }) {
           {blog.title}
         </h1>
 
-        {/* SUBTITLE */}
         {blog.subtitle && (
           <p
             style={{
@@ -119,7 +130,6 @@ export default function BlogDetail({ blog }) {
           </p>
         )}
 
-        {/* DATE */}
         {blog.date && (
           <p
             style={{
@@ -134,7 +144,6 @@ export default function BlogDetail({ blog }) {
           </p>
         )}
 
-        {/* IMAGE */}
         {blog.image && (
           <div style={{ marginBottom: "35px" }}>
             <img
@@ -151,7 +160,6 @@ export default function BlogDetail({ blog }) {
           </div>
         )}
 
-        {/* CONTENT */}
         <div
           style={{
             fontSize: isMobile ? "16px" : "18px",
@@ -193,6 +201,21 @@ export default function BlogDetail({ blog }) {
           />
         </div>
       </div>
+
+      <style jsx>{`
+        .loader {
+          border: 2px solid #fff;
+          border-top: 2px solid #0f172a;
+          border-radius: 50%;
+          width: 14px;
+          height: 14px;
+          animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }

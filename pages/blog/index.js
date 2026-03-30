@@ -1,80 +1,89 @@
 import Head from 'next/head';
 import { getAllBlogs } from '@/lib/api';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default function BlogPage({ blogs }) {
-    const router = useRouter();
+  const router = useRouter();
+  const [loading, setLoading] = useState(null); // null ili slug / "home"
 
-    const sortedBlogs = blogs
-        ?.slice()
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const sortedBlogs = blogs
+    ?.slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    const handleNavigate = (slug) => {
-        router.push(`/blog/${slug}`);
-    };
+  const handleNavigate = (slug) => {
+    setLoading(slug);
+    router.push(`/blog/${slug}`);
+  };
 
-    return (
-        <>
-            <Head>
-                <title>Svi blogovi - MR StoneLux</title>
-            </Head>
+  const handleHome = () => {
+    setLoading("home");
+    router.push("/");
+  };
 
-            <div className="page">
-                {/* HEADER */}
-                <div className="header">
-                    <h1>Svi naši projekti</h1>
-                    <p>Inspiracija, savjeti i priče iz našeg rada</p>
+  return (
+    <>
+      <Head>
+        <title>Svi blogovi - MR StoneLux</title>
+      </Head>
 
-                    <button className="homeBtn" onClick={() => router.push('/')}>
-                        ⬅ Početna
-                    </button>
+      <div className="page">
+        {/* HEADER */}
+        <div className="header">
+          <h1>Svi naši projekti</h1>
+          <p>Inspiracija, savjeti i priče iz našeg rada</p>
+
+          <button className="homeBtn" onClick={handleHome} disabled={loading === "home"}>
+            {loading === "home" ? <span className="loader"></span> : "⬅ Početna"}
+          </button>
+        </div>
+
+        {/* GRID */}
+        <div className="cards-grid">
+          {sortedBlogs?.map((blog, index) => (
+            <div
+              key={blog._id}
+              className="card"
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
+              <img
+                src={blog.image || '/assets/placeholder.jpg'}
+                className="card-img"
+                alt={blog.title}
+              />
+
+              <div className="card-content">
+                <div className="tags">
+                  <span className="tag">
+                    {blog.tag || 'Blog'}
+                  </span>
                 </div>
 
-                {/* GRID */}
-                <div className="cards-grid">
-                    {sortedBlogs?.map((blog, index) => (
-                        <div
-                            key={blog._id}
-                            className="card"
-                            style={{ animationDelay: `${index * 80}ms` }}
-                        >
-                            <img
-                                src={blog.image || '/assets/placeholder.jpg'}
-                                className="card-img"
-                                alt={blog.title}
-                            />
+                <p className="date">
+                  {blog.date
+                    ? new Date(blog.date).toISOString().split('T')[0]
+                    : ''}
+                </p>
 
-                            <div className="card-content">
-                                <div className="tags">
-                                    <span className="tag">
-                                        {blog.tag || 'Blog'}
-                                    </span>
-                                </div>
+                <h3>{blog.title}</h3>
 
-                                <p className="date">
-                                    {blog.date
-                                        ? new Date(blog.date).toISOString().split('T')[0]
-                                        : ''}
-                                </p>
+                <p className="clamp">
+                  {blog.excerpt || blog.shortDescription}
+                </p>
 
-                                <h3>{blog.title}</h3>
+                <button
+                  className="read-more-button"
+                  onClick={() => handleNavigate(blog.slug)}
+                  disabled={loading === blog.slug}
+                >
+                  {loading === blog.slug ? <span className="loader"></span> : "Pogledaj detaljnije →"}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
 
-                                <p className="clamp">
-                                    {blog.excerpt || blog.shortDescription}
-                                </p>
-
-                                <button
-                                    className="read-more-button"
-                                    onClick={() => handleNavigate(blog.slug)}
-                                >
-                                    Pogledaj detaljnije →
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <style jsx>{`
+        <style jsx>{`
           .page {
             min-height: 100vh;
             padding: 60px 20px;
@@ -108,9 +117,18 @@ export default function BlogPage({ blogs }) {
             border-radius: 30px;
             cursor: pointer;
             transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 110px;
           }
 
-          .homeBtn:hover {
+          .homeBtn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
+
+          .homeBtn:hover:enabled {
             transform: translateY(-2px);
             background: #333;
           }
@@ -132,7 +150,7 @@ export default function BlogPage({ blogs }) {
             opacity: 0;
             transform: translateY(20px);
             display: flex;
-  flex-direction: column;
+            flex-direction: column;
           }
 
           .card:hover {
@@ -148,9 +166,9 @@ export default function BlogPage({ blogs }) {
 
           .card-content {
             padding: 18px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
           }
 
           .tags {
@@ -185,19 +203,42 @@ export default function BlogPage({ blogs }) {
 
           .read-more-button {
             background-color: #d4af37;
-                  color: #fff;
-                  font-weight: bold;
-                  padding: 8px 14px;
-                  font-size: 13px;
-                  border: none;
-                  border-radius: 6px;
-                  cursor: pointer;
-                  margin-top: auto;
+            color: #fff;
+            font-weight: bold;
+            padding: 8px 14px;
+            font-size: 13px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 140px;
           }
 
-          .read-more-button:hover {
+          .read-more-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
+
+          .read-more-button:hover:enabled {
             transform: scale(1.03);
             opacity: 0.9;
+          }
+
+          .loader {
+            border: 2px solid #fff;
+            border-top: 2px solid #000;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.8s linear infinite;
+          }
+
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
           }
 
           @keyframes fadeInUp {
@@ -207,16 +248,16 @@ export default function BlogPage({ blogs }) {
             }
           }
         `}</style>
-            </div>
-        </>
-    );
+      </div>
+    </>
+  );
 }
 
 export async function getStaticProps() {
-    const blogs = await getAllBlogs();
+  const blogs = await getAllBlogs();
 
-    return {
-        props: { blogs },
-        revalidate: 60,
-    };
+  return {
+    props: { blogs },
+    revalidate: 60,
+  };
 }
